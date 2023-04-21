@@ -1,0 +1,27 @@
+{
+	"name": "javascript-exercises",
+	"version": "1.0.0",
+	"description": "javascript exercises",
+	"main": "index.js",
+	"scripts": {
+		"gitpush": "git push origin gitlab && git push origin github"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com:sgb004/javascript-exercises.git"
+	},
+	"author": "sgb004",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://gitlab.com/sgb004/javascript-exercises/issues"
+	},
+	"homepage": "https://gitlab.com/sgb004/javascript-exercises#readme",
+	"type": "module",
+	"dependencies": {
+		"jest": "^29.5.0"
+	},
+	"devDependencies": {},
+	"keywords": [
+		"javascript"
+	]
+}
