@@ -4,7 +4,7 @@
 	"description": "javascript exercises",
 	"main": "index.js",
 	"scripts": {
-		"gitpush": "git push origin gitlab && git push origin github"
+		"gitpush": "git push gitlab main && git push github main"
 	},
 	"repository": {
 		"type": "git",
