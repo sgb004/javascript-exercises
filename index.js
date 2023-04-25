@@ -1,33 +1,52 @@
 import fs from 'node:fs';
 import { exec } from 'child_process';
+import chalk from 'chalk';
 
 let files = [];
 
 const printList = () => {
+	console.log(chalk.bold('EJERCICIOS:\n'));
+
 	for (let i = 0; i < files.length; i++) {
-		console.log(`[${i + 1}] ${files[i]}`);
+		console.log(`[${chalk.bold(i + 1)}] ${files[i]}`);
 	}
 };
 
 const instructions = () => {
-	console.log('\nSelecciona un ejercicio o presiona:\n e para salir, r reiniciar');
+	console.log(
+		`\nSelecciona un ejercicio o presiona:\n ${chalk.bold('e')} para salir, ${chalk.bold(
+			'r'
+		)} reiniciar`
+	);
 };
 
 const execTest = (test) => {
 	test = files[test - 1];
 
-	console.log(`\n****** Ejecutando test [${test}] ******\n`);
+	fs.readFile(`./exercises/${test}/README.md`, 'utf8', (err, data) => {
+		console.log(
+			chalk.bold(`\n****** Descripción del test [${chalk.blueBright(test)}] ******\n`)
+		);
 
-	exec(
-		`node --experimental-vm-modules node_modules/jest/bin/jest.js ./exercises/${test}/${test}.test.js`,
-		(err, stdout, stderr) => {
-			if (err) throw Error(err);
-
-			console.log(stdout || stderr);
-			console.log('\n****** Test finalizado ******');
-			instructions();
+		if (err) {
+			console.log('Sin descripción');
+		} else {
+			console.log(data.trim());
 		}
-	);
+
+		console.log(chalk.bold(`\n****** Ejecutando test [${chalk.blueBright(test)}] ******\n`));
+
+		exec(
+			`node --experimental-vm-modules node_modules/jest/bin/jest.js ./exercises/${test}/${test}.test.js --colors`,
+			(err, stdout, stderr) => {
+				if (err) throw Error(err);
+
+				console.log(stdout || stderr);
+				console.log(chalk.bold('\n****** Test finalizado ******'));
+				instructions();
+			}
+		);
+	});
 };
 
 fs.readdir('./exercises', (err, result) => {
