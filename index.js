@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { exec } from 'child_process';
 import chalk from 'chalk';
+import spinner from 'simple-spinner';
 
 let files = [];
 
@@ -35,11 +36,13 @@ const execTest = (test) => {
 		}
 
 		console.log(chalk.bold(`\n****** Ejecutando test [${chalk.blueBright(test)}] ******\n`));
+		spinner.start({ sequence: 'dots12', text: 'Cargando...' });
 
 		exec(
 			`node --experimental-vm-modules node_modules/jest/bin/jest.js ./exercises/${test}/${test}.test.js --colors`,
 			(err, stdout, stderr) => {
 				if (err) throw Error(err);
+				spinner.stop();
 
 				console.log(stdout || stderr);
 				console.log(chalk.bold('\n****** Test finalizado ******'));
