@@ -2,7 +2,48 @@ import fs from 'node:fs';
 import { exec } from 'child_process';
 import chalk from 'chalk';
 import spinner from 'simple-spinner';
+import Menu from './menu.js';
 
+class Tests extends Menu {
+	execExercise(test) {
+		return new Promise((resolve, reject) => {
+			test = this.files[test - 1];
+
+			fs.readFile(`./exercises/${test}/README.md`, 'utf8', (err, data) => {
+				console.log(
+					chalk.bold(`\n****** Descripción del test [${chalk.blueBright(test)}] ******\n`)
+				);
+
+				if (err) {
+					console.log('Sin descripción');
+				} else {
+					console.log(data.trim());
+				}
+
+				console.log(
+					chalk.bold(`\n****** Ejecutando test [${chalk.blueBright(test)}] ******\n`)
+				);
+				spinner.start({ sequence: 'dots12', text: 'Cargando...' });
+
+				exec(
+					`node --experimental-vm-modules node_modules/jest/bin/jest.js ./exercises/${test}/${test}.test.js --colors`,
+					(err, stdout, stderr) => {
+						if (err) throw Error(err);
+						spinner.stop();
+
+						console.log(stdout || stderr);
+						console.log(chalk.bold('\n****** Test finalizado ******'));
+						//instructions();
+						resolve();
+					}
+				);
+			});
+		});
+	}
+}
+const tests = new Tests();
+tests.init();
+/*
 let files = [];
 
 const printList = () => {
@@ -84,3 +125,4 @@ fs.readdir('./exercises', (err, result) => {
 		}
 	});
 });
+*/

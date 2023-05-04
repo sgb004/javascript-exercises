@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "node index.js",
+		"devel": "node devel.js",
 		"gitpush": "git push gitlab main && git push github main"
 	},
 	"repository": {
