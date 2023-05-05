@@ -3,6 +3,7 @@ import chalk from 'chalk';
 
 export default class Menu {
 	files = [];
+	blockStdin = false;
 
 	init() {
 		fs.readdir('./exercises', (err, result) => {
@@ -15,6 +16,7 @@ export default class Menu {
 			this.instructions();
 
 			process.stdin.on('data', (data) => {
+				if (this.blockStdin) return false;
 				data = data.toString().trim();
 				if (data.match(/^[0-9]+$/)) {
 					data = parseInt(data);
